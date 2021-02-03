@@ -166,7 +166,6 @@ class SingleLinkedList:public Node{
         }
 
         void DeepCopy(Node* &head, Node* &new_list){
-            std::cout << "enter the deep copy " << std::endl;
             Node* travel = head;
             while(travel != NULL){// or while(head) //true
                 Add2Back(new_list,travel -> value);
