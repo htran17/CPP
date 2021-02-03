@@ -13,7 +13,11 @@ class Node{
 class SingleLinkedList:public Node{
     public:
         virtual void PrintList(Node* head){
+            
             int counter = 0;
+            if(head == NULL){
+                std::cout << "NO NODE. " << std::endl;
+            }
             while(head != NULL){
                 std::cout << "Value: " << head -> value << ". Position: " << counter  << std::endl;
                 head = head -> next;
@@ -47,28 +51,34 @@ class SingleLinkedList:public Node{
 
         }
 
+        //algorithm
+        //idea: create a new list to store all nodes are not deleted from old node.
+        //check each node. 
+        // if node -> value == deleted number => travel to next node 
+        // sign head = travel
+        // travel == NULL; break out
+        // if node -> value != deleted number => add that node to new list. 
+        // Move to next node.
         virtual void DeleteByValue(Node* &head, int number){
-            Node* prev_node = NULL;
-            Node* current_node = head;
+            // delete every node has a match delete value
+            Node* travel = head;
+            Node* new_list = NULL;
             int counter = 0;
-            if(head -> value == number){
-                head = head -> next;
-            }
-            else{
-                while(current_node -> next){
-                    prev_node = current_node;
-                    current_node = current_node -> next;
-                    if (current_node -> value == number){
-                        std::cout<< "prev_node: " << prev_node -> value << std::endl;
-                        prev_node -> next = current_node -> next;
-                        delete current_node;
-                        counter++;
-                    }        
+            while(travel != NULL){
+                if(travel -> value == number){
+                    travel = travel -> next;
+                    head = travel;
+                    if(travel == NULL){
+                        head = NULL;
+                        break;
+                    }
                 }
-                if(counter == 0){
-                    std::cout << "No node with value " << number << " in list" << std::endl;
+                else{
+                    Add2Back(new_list,travel -> value);
+                    travel = travel -> next;
                 }
             }
+            head = new_list;
             
             return;
         }
@@ -217,27 +227,18 @@ int main(){
     Node* head = NULL;
     Node* new_node = NULL;
     Node* new_head = NULL;
-
-    Ryan_ptr -> Add2Back(head, 3);
-    Ryan_ptr -> Add2Back(head, 4);
+    
     Ryan_ptr -> Add2Back(head, 5);
+    Ryan_ptr -> Add2Back(head, 2);
+    Ryan_ptr -> Add2Back(head, 6);
+    Ryan_ptr -> Add2Back(head, 2);
+    Ryan_ptr -> Add2Back(head, 2);
+    Ryan_ptr -> Add2Back(head, 2);
+    Ryan_ptr -> Add2Back(head, 7);
+
     Ryan_ptr -> DeepCopy(head,new_head);
-    //Ryan_ptr -> DeleteByPosition(new_head,2);
-    Ryan_derived.PrintList(new_head);
-    std::cout << "PRINT OUT HEAD" << std::endl;
+    Ryan_ptr -> DeleteByValue(head,2);
     Ryan_ptr -> PrintList(head);
-    Ryan_ptr -> Merge2SortLinkedList(head,new_head, new_node);
-    std::cout << "PRINT OUT new node" << std::endl;
-
-    Ryan_derived.PrintList(new_node);
-    std::cout << "PRINT OUT add new node" << std::endl;
-
-    Ryan_derived.Add2Back(new_node,7);
-    Node* new_list = NULL;
-    Ryan_derived.CloneLinkedList(new_node, new_list);
-    Ryan_derived.DeleteByPosition(new_list,4);
-    Ryan_derived.PrintList(new_list);
-
 
     return 0;
 }
