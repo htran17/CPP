@@ -1,5 +1,5 @@
 
-it needs to install opencv3. 
+it needs an opencv3 package.
 
 how to compile
 
