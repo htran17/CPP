@@ -10,8 +10,9 @@
 #include"Camera.hpp"
 
 int main(){
-    Video_Record RYAN(0,1920,1080,30);
-    Video_Record *Ryan_ptr = &RYAN ;
+    Video_Record Ryan(1920,1080,30);
+    Video_Record *Ryan_ptr = &Ryan;
+    Ryan_ptr -> Set_Camera(0);
     Ryan_ptr -> Camera_IPC_Product();
     return 0;
 
