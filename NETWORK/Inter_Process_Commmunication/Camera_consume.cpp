@@ -7,13 +7,11 @@
 #include <semaphore.h> //sem_t
 #include <csignal> //single handler
 #include<opencv2/opencv.hpp> //opencv. read camera array and image processing.
-//#include"Image.hpp"
 #include"Camera.hpp"
 
 int main(){
     Video_Record Ryan(1920,1080,30);
     Video_Record *Ryan_ptr = &Ryan;
-    //Ryan_ptr -> Set_Camera(0);
     Ryan_ptr -> Camera_IPC_Consume();
     return 0;
 }

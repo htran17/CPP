@@ -89,7 +89,6 @@ class Camera{
             while(true){
                 cv::Mat frame;
                 cap >> frame;
-                
                 if(!frame.empty()){
                     Display_Frame_Number(frame,counter);
                     counter++;
@@ -100,9 +99,7 @@ class Camera{
                             break;
                         }
                     }
-                    
                 }
-                
             }
             cap.release();
             return;
@@ -113,7 +110,6 @@ class Camera{
 class IPC:public Camera{
     public:
         IPC(int w, int h, int rate):Camera(w,h,rate){}
-
         void Camera_IPC_Product(){
             std::cout << "size of: " << buffer << std::endl;
             
@@ -121,43 +117,27 @@ class IPC:public Camera{
                 std::cout << "check camera: " << camera << std::endl;
                 return;
             }
-            
-            
             void *addr;
             int fd = shm_open("RYAN", O_CREAT | O_RDWR, 0666);
             if(fd == -1){
                 std::cout <<"!!! error with shm_open."<< std::endl;
             }
-
             if(ftruncate(fd,buffer) == -1){
                 std::cout<<"ERROR with ftruncate. " << std::endl;
             }
-
             addr = (mmap(0, buffer, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0));
-
             if (addr == MAP_FAILED){
                 std::cout <<"!!! error with mmap" << std::endl;
             }
-
             sem_t *sem = sem_open("time", O_CREAT, 0644,buffer);
             if(sem==SEM_FAILED){
                 exit(1);
             }
-            
-            /*
-            char *addr;
-            int fd = 0;
-            sem_t *sem = nullptr;
-            IPC(addr,fd,sem);
-            */
-
             bool flag = true;
             int counter = 0;
-
             signal(SIGINT, &handler);
             cv::Mat frame;
             cv::Mat *frame_ptr = &frame;
-
             while(true){
                 cap >> frame;
                 //std::cout << "frame channels: " << frame.channels() << std::endl;
@@ -171,12 +151,10 @@ class IPC:public Camera{
                     }
                     munmap(addr,0);
                     counter++;
-
                 }
             }
             cap.release();
             return;
-
         }
 
         void Camera_IPC_Consume(){
@@ -203,28 +181,20 @@ class IPC:public Camera{
             while(true){
                 memcpy(frame.data, addr,buffer);
                 if(!frame.empty()){
-                    cv::imshow("FRAME", frame);
-                    int keyboard = cv::waitKey(1);
-                    if (keyboard == 'q' || keyboard == 27){
+                    Show_Frame(frame,flag);
+                    if(flag == false){
                         break;
-                    }
-                    if (keyboard == 'p' || keyboard == 112){
-                        cv::waitKey(0);
                     }
                 }
                 else{
                     std::cout << "NO FRAME" << std::endl;
                 }
-
                 munmap(addr,0);
-
-                
             }
             if(close(fd) == -1){ 
                 std::cout<<"ERROR with close." << std::endl;
             }
             sem_unlink("time");
-   
             sem_close(sem);
         }
 
@@ -255,15 +225,12 @@ class Video_Record:public IPC{
                             break;
                         }
                     }
-                    
                 }
             }
             cap.release();
             return;
         }
-
 };
-
 
 #endif
 
