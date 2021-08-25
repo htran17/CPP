@@ -19,7 +19,8 @@ bool ready = false;
 std::condition_variable thread_ready;
 
 void thread1(int &number){
-    while(number < 100){
+    const int num = number + 100;
+    while(number < num){
         std::unique_lock<std::mutex> my_lock(my_mutex);
         thread_ready.wait(my_lock,[]{return (!ready);});
         std::cout << "even number: " << number << std::endl;
@@ -31,7 +32,8 @@ void thread1(int &number){
 }
 
 void thread2(int &number){
-    while(number < 100){
+    const int num = number + 100;
+    while(number < num){
         std::unique_lock<std::mutex> my_lock(my_mutex);
         thread_ready.wait(my_lock,[]{return(ready);});
         std::cout << "odd number:     " << number << std::endl;
@@ -43,7 +45,7 @@ void thread2(int &number){
 }
 
 int main(){
-    int number = 0;
+    int number = 200;
     std::thread t1(thread1,std::ref(number));
     std::thread t2(thread2, std::ref(number));
 
