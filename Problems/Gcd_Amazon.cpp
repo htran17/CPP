@@ -1,6 +1,8 @@
 #include<iostream>
 #include<vector>
 #include<array>
+
+
 //The greatest common divisor(GCD), also called highest common factor (HCF) of N number 
 //is the largest positive integer the divedes all numbers without giving a remainder.
 
@@ -55,8 +57,9 @@
 // pick a first point array element.
 // use for loop to  iterate gcd 2 numbers
 
-//std array
-
+//std array: pass arrary reference.
+// pick a first point array element.
+// use for loop to  iterate gcd 2 numbers
 
 
 int GCD2number(int &a, int &b){
