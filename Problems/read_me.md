@@ -12,3 +12,5 @@ For Example: std::array <int, 5> array = {4,8,12,16 20}
 16: 1 , 2 , 4 , 8, 16
 20: 1 , 2 , 4 , 10 , 20
 => 4 is GCDs
+
+In File Cell_Change.cpp, create an algorithm to output the state of the cells after the given number of days. One function uses std::array to pass parameter, another function uses std::vector and pass pointer array. 
